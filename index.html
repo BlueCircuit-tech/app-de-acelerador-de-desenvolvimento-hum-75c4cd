@@ -2597,6 +2597,421 @@
         <button id="assinatura_btn_mensal" class="relative z-10 flex-1 py-2 text-center text-sm font-semibold transition-colors duration-300 ease-in-out text-white" onclick="assinatura_togglePeriodo('mensal')">Mensal</button>
         <button id="
 
+    <section data-tela="chat-de-suporte" class="hidden">
+  <style>
+    .chat-enter { animation: chatFadeUp .35s ease-out; }
+    @keyframes chatFadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .msg-pop { animation: msgPop .25s ease-out; }
+    @keyframes msgPop { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+    .typing-dot { animation: typingBounce 1.2s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: .2s; }
+    .typing-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+    .scroll-hide::-webkit-scrollbar { width: 3px; }
+    .scroll-hide::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .danger-pulse { animation: dangerPulse 2s infinite; }
+    @keyframes dangerPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.35); } 50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); } }
+    .emergency-btn:hover { animation: emergencyGlow 1s infinite; }
+    @keyframes emergencyGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.4); } 50% { box-shadow: 0 0 12px 2px rgba(239,68,68,.25); } }
+  </style>
+
+  <div class="flex flex-col h-full bg-slate-50">
+
+    <!-- Coach Header -->
+    <div class="bg-white border-b border-slate-200 px-4 pt-3 pb-3 flex-shrink-0">
+      <div class="flex items-center justify-between mb-2.5">
+        <button onclick="mostrarTela('visao-geral')" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 active:scale-90 transition-all" aria-label="Voltar">
+          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="chat_de_suporte_verDadosCoach()" class="text-xs font-medium text-marca-600 hover:text-marca-800 transition-colors">
+            Ver perfil
+          </button>
+          <button onclick="chat_de_suporte_abrirConfig()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100 active:scale-90 transition-all" aria-label="Configurações do chat">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="relative flex-shrink-0">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-marca-400 to-marca-600 flex items-center justify-center text-white font-display font-bold text-lg shadow-md">AC</div>
+          <div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 border-2 border-white rounded-full"></div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h2 class="font-display font-bold text-slate-800 text-base truncate">Ana Carolina Mendes</h2>
+          <div class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+            <span class="text-xs text-emerald-600 font-medium">Online agora</span>
+            <span class="text-xs text-slate-400">· Coach · CRP 06/145230</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <button onclick="chat_de_suporte_iniciarChamada()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-100 active:scale-90 transition-all" aria-label="Chamada de voz">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.04 12.04 0 01-7.143-7.143c-.162-.441.004-.928.38-1.211l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+          </button>
+          <button onclick="chat_de_suporte_iniciarVideo()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-marca-50 text-marca-600 hover:bg-marca-100 active:scale-90 transition-all" aria-label="Chamada de vídeo">
+            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date Separator -->
+    <div class="flex items-center gap-3 px-5 py-2.5 flex-shrink-0">
+      <div class="flex-1 h-px bg-slate-200"></div>
+      <span class="text-[11px] font-medium text-slate-400 bg-slate-50 px-3 py-1 rounded-full" id="chat-data-separador">Hoje, 14 de Junho</span>
+      <div class="flex-1 h-px bg-slate-200"></div>
+    </div>
+
+    <!-- Messages Area -->
+    <div id="chat-mensagens" class="flex-1 overflow-y-auto scroll-hide px-4 pb-2 space-y-3">
+      <!-- Messages injected by JS -->
+    </div>
+
+    <!-- Typing Indicator -->
+    <div id="chat-typing" class="hidden px-4 pb-2">
+      <div class="flex items-center gap-2 bg-white rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-slate-100 w-fit max-w-[80%]">
+        <div class="flex gap-1">
+          <div class="w-2 h-2 bg-slate-300 rounded-full typing-dot"></div>
+          <div class="w-2 h-2 bg-slate-300 rounded-full typing-dot"></div>
+          <div class="w-2 h-2 bg-slate-300 rounded-full typing-dot"></div>
+        </div>
+        <span class="text-xs text-slate-400 ml-1">Ana está digitando...</span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div id="chat-atalhos" class="flex-shrink-0 px-4 py-2 bg-white border-t border-slate-100">
+      <div class="flex gap-2 overflow-x-auto scroll-hide pb-0.5">
+        <button onclick="chat_de_suporte_solicitarRetorno()" class="flex items-center gap-1.5 px-3.5 py-2 bg-sky-50 text-sky-700 rounded-xl text-xs font-semibold whitespace-nowrap active:scale-95 hover:bg-sky-100 transition-all border border-sky-100">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992h4.992m12.968 0h-4.992m4.992 0v4.992M2.985 9.348v4.992h4.992"/></svg>
+          Solicitar Retorno
+        </button>
+        <button onclick="chat_de_suporte_agendarSessao()" class="flex items-center gap-1.5 px-3.5 py-2 bg-violet-50 text-violet-700 rounded-xl text-xs font-semibold whitespace-nowrap active:scale-95 hover:bg-violet-100 transition-all border border-violet-100">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+          Agendar Sessão
+        </button>
+        <button onclick="chat_de_suporte_emergencia()" class="emergency-btn flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-700 rounded-xl text-xs font-semibold whitespace-nowrap active:scale-95 hover:bg-red-100 transition-all border border-red-100">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+          Emergência
+        </button>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="flex-shrink-0 bg-white border-t border-slate-200 px-3 pt-2.5 pb-4">
+      <div class="flex items-end gap-2">
+        <button onclick="chat_de_suporte_anexo()" class="w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-marca-600 hover:bg-marca-50 active:scale-90 transition-all flex-shrink-0" aria-label="Anexar imagem">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m5.742-4.118a2.25 2.25 0 013.182 0l1.5 1.5a2.25 2.25 0 010 3.182l-6.364 6.364a2.25 2.25 0 01-3.182 0l-1.5-1.5a2.25 2.25 0 010-3.182l6.364-6.364z"/></svg>
+        </button>
+        <div class="flex-1 relative">
+          <textarea id="chat-input" rows="1" placeholder="Escreva sua mensagem..."
+            class="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 pr-10 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-marca-200 focus:border-marca-400 transition-all font-body max-h-28"
+            onkeydown="chat_de_suporte_onKey(event)" oninput="chat_de_suporte_autoResize(this)"></textarea>
+          <button onclick="chat_de_suporte_emoji()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-500 active:scale-90 transition-all" aria-label="Emoji">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM7.5 10.5a.375.375 0 11.75 0 .375.375 0 01-.75 0zm9 0a.375.375 0 11.75 0 .375.375 0 01-.75 0z"/></svg>
+          </button>
+        </div>
+        <button onclick="chat_de_suporte_enviar()" id="chat-btn-enviar" class="w-10 h-10 flex items-center justify-center rounded-xl bg-marca-600 text-white hover:bg-marca-700 active:scale-90 transition-all flex-shrink-0 shadow-md shadow-marca-200" aria-label="Enviar mensagem">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12z"/></svg>
+        </button>
+        <button onclick="chat_de_suporte_audio()" class="w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-marca-600 hover:bg-marca-50 active:scale-90 transition-all flex-shrink-0" aria-label="Enviar áudio">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 6a6 6 0 01-6-6v-1.5m6 6v-4.5m0 4.5h-4.5m4.5 0h4.5m-9.75 0a9 9 0 009 0m-9 0V3.75m0 14.25v-4.5m0 4.5h4.5m-4.5 0H6.75"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  const mensagensIniciais = [
+    { id: 1, tipo: 'recebida', texto: 'Olá, Maria Helena! Tudo bem? Sou a Ana Carolina, sua coach responsável. Estou aqui para acompanhar você nessa jornada. Como você está se sentindo hoje?', hora: '2025-06-14T09:02:00', lida: true },
+    { id: 2, tipo: 'enviada', texto: 'Bom dia, Dra. Ana! Estou me sentindo um pouco ansiosa hoje. Meu filho teve uma recaída ontem e estou com dificuldade de manter meus limites.', hora: '2025-06-14T09:05:00', lida: true },
+    { id: 3, tipo: 'recebida', texto: 'Compreendo completamente, Maria Helena. Recaídas são parte do processo e é natural que mexam com você. Lembre-se: você não é responsável pela escolha dele, mas é responsável pelo seu bem-estar. Vamos juntas revisar seus limites na nossa próxima sessão. Quinta-feira, 15h, está bom?', hora: '2025-06-14T09:08:00', lida: true },
+    { id: 4, tipo: 'enviada', texto: 'Sim, quinta-feira está perfeito. Obrigada por estar sempre disponível, Dra. Ana.', hora: '2025-06-14T09:10:00', lida: true },
+    { id: 5, tipo: 'recebida', texto: 'Sempre! Lembre-se também de usar o Mapa de Regulação Emocional se a ansiedade aumentar. O exercício da respiração 4-7-8 pode ajudar agora mesmo, se quiser tentar. 💙', hora: '2025-06-14T09:12:00', lida: true },
+    { id: 6, tipo: 'enviada', texto: 'Vou tentar agora mesmo. Muito obrigada pelo apoio!', hora: '2025-06-14T09:14:00', lida: true },
+  ];
+
+  let mensagens = JSON.parse(JSON.stringify(mensagensIniciais));
+  let msgIdCounter = mensagens.length + 1;
+
+  function formatarHora(iso) {
+    const d = new Date(iso);
+    return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function isHoje(iso) {
+    const d = new Date(iso);
+    const hoje = new Date();
+    return d.toDateString() === hoje.toDateString();
+  }
+
+  function getDataLabel(iso) {
+    const d = new Date(iso);
+    const hoje = new Date();
+    const ontem = new Date(hoje); ontem.setDate(hoje.getDate() - 1);
+    if (d.toDateString() === hoje.toDateString()) return 'Hoje';
+    if (d.toDateString() === ontem.toDateString()) return 'Ontem';
+    return d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+  }
+
+  function renderizarMensagens() {
+    const container = document.getElementById('chat-mensagens');
+    if (!container) return;
+    let html = '';
+    let dataAnterior = null;
+
+    mensagens.forEach((msg, i) => {
+      const labelData = getDataLabel(msg.hora);
+      if (labelData !== dataAnterior) {
+        html += `<div class="flex items-center gap-3 py-2"><div class="flex-1 h-px bg-slate-200"></div><span class="text-[11px] font-medium text-slate-400 bg-slate-50 px-3 py-1 rounded-full">${labelData}, ${new Date(msg.hora).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' })}</span><div class="flex-1 h-px bg-slate-200"></div></div>`;
+        dataAnterior = labelData;
+      }
+
+      if (msg.tipo === 'recebida') {
+        html += `
+        <div class="msg-pop flex items-start gap-2 max-w-[85%]">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-marca-400 to-marca-600 flex items-center justify-center text-white font-display font-bold text-xs flex-shrink-0 mt-1 shadow-sm">AC</div>
+          <div>
+            <div class="bg-white rounded-2xl rounded-tl-md px-3.5 py-2.5 shadow-sm border border-slate-100">
+              <p class="text-sm text-slate-700 leading-relaxed font-body">${msg.texto}</p>
+            </div>
+            <div class="flex items-center gap-1.5 mt-0.5 ml-1">
+              <span class="text-[10px] text-slate-400">${formatarHora(msg.hora)}</span>
+              <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+            </div>
+          </div>
+        </div>`;
+      } else {
+        const checks = msg.lida
+          ? '<svg class="w-3.5 h-3.5 text-marca-400" fill="currentColor" viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"/></svg><svg class="w-3.5 h-3.5 text-marca-400 -ml-2" fill="currentColor" viewBox="0 0 24 24"><path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"/></svg>'
+          : '<svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
+        html += `
+        <div class="msg-pop flex items-start gap-2 max-w-[85%] ml-auto flex-row-reverse">
+          <div>
+            <div class="bg-marca-600 rounded-2xl rounded-tr-md px-3.5 py-2.5 shadow-md shadow-marca-200/30">
+              <p class="text-sm text-white leading-relaxed font-body">${msg.texto}</p>
+            </div>
+            <div class="flex items-center justify-end gap-1.5 mt-0.5 mr-1">
+              <span class="text-[10px] text-slate-400">${formatarHora(msg.hora)}</span>
+              ${checks}
+            </div>
+          </div>
+        </div>`;
+      }
+    });
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+  }
+
+  window.chat_de_suporte_enviar = function() {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+    const texto = input.value.trim();
+    if (!texto) return;
+
+    const novaMsg = { id: msgIdCounter++, tipo: 'enviada', texto: texto, hora: new Date().toISOString(), lida: false };
+    mensagens.push(novaMsg);
+    input.value = '';
+    input.style.height = 'auto';
+    renderizarMensagens();
+    input.focus();
+
+    setTimeout(() => {
+      const typing = document.getElementById('chat-typing');
+      if (typing) typing.classList.remove('hidden');
+      const container = document.getElementById('chat-mensagens');
+      if (container) container.scrollTop = container.scrollHeight;
+    }, 600);
+
+    setTimeout(() => {
+      const typing = document.getElementById('chat-typing');
+      if (typing) typing.classList.add('hidden');
+      const respostas = [
+        'Perfeito, Maria Helena! Continue se dedicando aos exercícios de regulação emocional. Lembre-se: pequenos passos diários geram grandes transformações. 💫',
+        'Compreendo sua preocupação. Quer que agendemos uma sessão extra essa semana para conversarmos mais sobre isso? Estou aqui para você.',
+        'Excelente percepção, Maria Helena! Isso mostra o quanto você está evoluindo. Vamos trabalhar isso na próxima sessão. Continue assim! 🌿',
+        'Que bom que você compartilhou isso comigo. Sua coragem em reconhecer esses sentimentos é um grande passo no seu desenvolvimento. Orgulho de você!',
+      ];
+      const resp = respostas[Math.floor(Math.random() * respostas.length)];
+      mensagens.push({ id: msgIdCounter++, tipo: 'recebida', texto: resp, hora: new Date().toISOString(), lida: true });
+      renderizarMensagens();
+    }, 2200);
+  };
+
+  window.chat_de_suporte_onKey = function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chat_de_suporte_enviar(); }
+  };
+
+  window.chat_de_suporte_autoResize = function(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 112) + 'px';
+  };
+
+  window.chat_de_suporte_solicitarRetorno = function() {
+    mensagens.push({ id: msgIdCounter++, tipo: 'enviada', texto: '🔔 Solicitação de Retorno: Gostaria de falar com a Dra. Ana Carolina assim que ela estiver disponível. Obrigada!', hora: new Date().toISOString(), lida: false });
+    renderizarMensagens();
+    toast('Solicitação de retorno enviada. Ana Carolina entrará em contato em breve.', 'ok');
+  };
+
+  window.chat_de_suporte_agendarSessao = function() {
+    abrirModal(`
+      <div class="space-y-4">
+        <div class="bg-marca-50 rounded-xl p-4 flex items-start gap-3">
+          <svg class="w-5 h-5 text-marca-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+          <div>
+            <p class="text-sm font-semibold text-marca-800">Disponibilidade da Semana</p>
+            <p class="text-xs text-marca-600 mt-0.5">Escolha um horário com Ana Carolina</p>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <button onclick="chat_de_suporte_confirmarAgendamento('Quarta, 18:00')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-marca-300 hover:bg-marca-50/50 active:scale-[.98] transition-all">
+            <div class="flex items-center justify-between"><span class="text-sm font-semibold text-slate-800">Quarta-feira, 18:00</span><span class="badge bg-emerald-100 text-emerald-700 text-[10px]">Disponível</span></div>
+            <span class="text-xs text-slate-500">Online · 50 min</span>
+          </button>
+          <button onclick="chat_de_suporte_confirmarAgendamento('Quinta, 15:00')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-marca-300 hover:bg-marca-50/50 active:scale-[.98] transition-all">
+            <div class="flex items-center justify-between"><span class="text-sm font-semibold text-slate-800">Quinta-feira, 15:00</span><span class="badge bg-emerald-100 text-emerald-700 text-[10px]">Disponível</span></div>
+            <span class="text-xs text-slate-500">Online · 50 min</span>
+          </button>
+          <button onclick="chat_de_suporte_confirmarAgendamento('Sexta, 10:00')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-marca-300 hover:bg-marca-50/50 active:scale-[.98] transition-all">
+            <div class="flex items-center justify-between"><span class="text-sm font-semibold text-slate-800">Sexta-feira, 10:00</span><span class="badge bg-amber-100 text-amber-700 text-[10px]">Última vaga</span></div>
+            <span class="text-xs text-slate-500">Online · 50 min</span>
+          </button>
+        </div>
+      </div>
+    `, 'Agendar Sessão com Ana Carolina');
+  };
+
+  window.chat_de_suporte_confirmarAgendamento = function(horario) {
+    fecharModal();
+    setTimeout(() => {
+      mensagens.push({ id: msgIdCounter++, tipo: 'enviada', texto: `📅 Solicitação de agendamento: ${horario}. Aguardo confirmação.`, hora: new Date().toISOString(), lida: false });
+      renderizarMensagens();
+      toast(`Solicitação de agendamento enviada: ${horario}`, 'ok');
+    }, 300);
+  };
+
+  window.chat_de_suporte_emergencia = function() {
+    abrirModal(`
+      <div class="space-y-4 text-center">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+          <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+        </div>
+        <div>
+          <h3 class="font-display font-bold text-slate-800 text-lg">Protocolo de Emergência</h3>
+          <p class="text-sm text-slate-500 mt-1">Se você está em crise, use estes recursos:</p>
+        </div>
+        <div class="space-y-2.5 text-left">
+          <button onclick="fecharModal(); chat_de_suporte_regulacaoCrise();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl hover:bg-slate-100 active:scale-[.98] transition-all border border-slate-100">
+            <div class="w-10 h-10 bg-marca-100 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.002 4.002 0 01-3.09-3.09L2.25 12l2.846-.813a4.002 4.002 0 013.09-3.09L9 5.25l.813 2.846a4.002 4.002 0 013.09 3.09L15.75 12l-2.846.813a4.002 4.002 0 01-3.09 3.09z"/></svg></div>
+            <div><p class="text-sm font-semibold text-slate-800">Mapa de Regulação Emocional</p><p class="text-xs text-slate-500">Exercícios guiados para crise</p></div>
+          </button>
+          <button onclick="fecharModal(); toast('Conectando ao CVV...', 'info');" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl hover:bg-slate-100 active:scale-[.98] transition-all border border-slate-100">
+            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.04 12.04 0 01-7.143-7.143c-.162-.441.004-.928.38-1.211l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
+            <div><p class="text-sm font-semibold text-slate-800">CVV — 188</p><p class="text-xs text-slate-500">Centro de Valorização da Vida</p></div>
+          </button>
+          <button onclick="fecharModal(); mostrarTela('meus-alertas');" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl hover:bg-slate-100 active:scale-[.98] transition-all border border-slate-100">
+            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg></div>
+            <div><p class="text-sm font-semibold text-slate-800">Meus Alertas</p><p class="text-xs text-slate-500">Ver sinais de alerta ativos</p></div>
+          </button>
+        </div>
+      </div>
+    `, '🆘 Protocolo de Emergência');
+  };
+
+  window.chat_de_suporte_regulacaoCrise = function() {
+    abrirModal(`
+      <div class="space-y-4">
+        <p class="text-sm text-slate-600 font-medium">Passo a passo rápido para regulação emocional:</p>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3"><div class="w-7 h-7 bg-marca-100 text-marca-700 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div><div><p class="text-sm text-slate-800 font-semibold">Respiração 4-7-8</p><p class="text-xs text-slate-500">Inspire por 4s, segure por 7s, expire por 8s. Repita 4 vezes.</p></div></div>
+          <div class="flex items-start gap-3"><div class="w-7 h-7 bg-marca-100 text-marca-700 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div><div><p class="text-sm text-slate-800 font-semibold">Ancoragem 5-4-3-2-1</p><p class="text-xs text-slate-500">5 coisas que vê · 4 que toca · 3 que ouve · 2 que cheira · 1 que saboreia</p></div></div>
+          <div class="flex items-start gap-3"><div class="w-7 h-7 bg-marca-100 text-marca-700 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div><div><p class="text-sm text-slate-800 font-semibold">Afirmação de Limite</p><p class="text-xs text-slate-500">"Eu sou responsável pelo meu bem-estar. Suas escolhas não me definem."</p></div></div>
+        </div>
+        <button onclick="fecharModal(); mostrarTela('regulacao-emocional');" class="w-full btn mt-2">Ir para Regulação Emocional Completa</button>
+      </div>
+    `, 'Mapa de Regulação Emocional');
+  };
+
+  window.chat_de_suporte_anexo = function() {
+    toast('Selecione uma imagem do seu dispositivo', 'info');
+  };
+
+  window.chat_de_suporte_audio = function() {
+    mensagens.push({ id: msgIdCounter++, tipo: 'enviada', texto: '🎤 Mensagem de áudio (0:12)', hora: new Date().toISOString(), lida: false });
+    renderizarMensagens();
+  };
+
+  window.chat_de_suporte_emoji = function() {
+    const emojis = ['💙','🙏','💪','🌿','✨','🫂','💜','🙌'];
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const input = document.getElementById('chat-input');
+    if (input) { input.value += emoji; input.focus(); }
+  };
+
+  window.chat_de_suporte_iniciarChamada = function() {
+    toast('Iniciando chamada com Ana Carolina...', 'info');
+  };
+
+  window.chat_de_suporte_iniciarVideo = function() {
+    toast('Iniciando videochamada com Ana Carolina...', 'info');
+  };
+
+  window.chat_de_suporte_verDadosCoach = function() {
+    abrirModal(`
+      <div class="space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-marca-400 to-marca-600 flex items-center justify-center text-white font-display font-bold text-2xl shadow-lg">AC</div>
+          <div>
+            <h3 class="font-display font-bold text-slate-800 text-lg">Ana Carolina Mendes</h3>
+            <p class="text-sm text-marca-600 font-medium">Coach · CRP 06/145230</p>
+            <p class="text-xs text-emerald-600 flex items-center gap-1 mt-0.5"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Online agora</p>
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-xl p-4 space-y-2.5">
+          <div class="flex justify-between text-sm"><span class="text-slate-500">Especialidade</span><span class="text-slate-800 font-medium">Codependência & Dependência Química</span></div>
+          <div class="flex justify-between text-sm"><span class="text-slate-500">Experiência</span><span class="text-slate-800 font-medium">12 anos</span></div>
+          <div class="flex justify-between text-sm"><span class="text-slate-500">Clientes atendidos</span><span class="text-slate-800 font-medium">340+</span></div>
+          <div class="flex justify-between text-sm"><span class="text-slate-500">Sessões com você</span><span class="text-slate-800 font-medium">8 sessões</span></div>
+          <div class="flex justify-between text-sm"><span class="text-slate-500">Próxima sessão</span><span class="text-marca-600 font-medium">Quinta, 15:00</span></div>
+        </div>
+        <button onclick="fecharModal(); chat_de_suporte_agendarSessao();" class="w-full btn">Agendar Nova Sessão</button>
+      </div>
+    `, 'Perfil do Coach');
+  };
+
+  window.chat_de_suporte_abrirConfig = function() {
+    abrirModal(`
+      <div class="space-y-3">
+        <p class="text-sm text-slate-500 font-medium mb-3">Configurações do chat</p>
+        <button onclick="chat_de_suporte_limparChat(); fecharModal();" class="w-full text-left p-3.5 rounded-xl border border-red-200 hover:bg-red-50 active:scale-[.98] transition-all">
+          <p class="text-sm font-semibold text-red-700">Limpar histórico do chat</p>
+          <p class="text-xs text-red-500 mt-0.5">Remove todas as mensagens desta conversa</p>
+        </button>
+        <button onclick="fecharModal(); toast('Notificações ativadas', 'ok');" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 active:scale-[.98] transition-all">
+          <p class="text-sm font-semibold text-slate-800">Notificações</p>
+          <p class="text-xs text-slate-500 mt-0.5">Ativar notificações de novas mensagens</p>
+        </button>
+      </div>
+    `, 'Configurações');
+  };
+
+  window.chat_de_suporte_limparChat = function() {
+    mensagens = [];
+    renderizarMensagens();
+    toast('Histórico do chat limpo', 'ok');
+  };
+
+  renderizarMensagens();
+})();
+</script>
+```
+
+Navegação: voltar para Visão Geral, botões de chamada de voz/vídeo, perfil do coach, configurações, atalhos levam a destinos válidos (solicitar retorno envia mensagem, agendar abre modal com horários e confirma, emergência abre modal com regulacao emocional + mostrarTela('meus-alertas')). Todos os botões e ícones têm handler. O emoji insere no input, áudio envia placeholder, anexo retorna toast. Scroll infinito preparado via container scrollável.
+
     <!-- TELAS -->
 
     </main>
