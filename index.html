@@ -484,6 +484,258 @@
     }
     </script>
 
+    <section data-tela="novo-diagnostico" class="hidden">
+      <div id="nd-container" class="h-full flex flex-col">
+        <!-- Progreso y cabecera del cuestionario -->
+        <div id="nd-header" class="shrink-0 px-6 pt-6 pb-3">
+          <div class="flex items-center justify-between mb-3">
+            <button onclick="novo_diagnostico_pausar()" class="flex items-center gap-1.5 text-sm font-medium text-marca-400 hover:text-marca-600 transition-colors active:scale-95">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Pausar
+            </button>
+            <span id="nd-progress-text" class="text-sm font-medium text-marca-400">Questão 1 de 12</span>
+          </div>
+          <div class="h-2 bg-marca-100 rounded-full overflow-hidden">
+            <div id="nd-progress-bar" class="h-full bg-marca-500 rounded-full transition-all duration-500 ease-out" style="width: 8.33%"></div>
+          </div>
+        </div>
+
+        <!-- Contenido del cuestionario -->
+        <div id="nd-questions-area" class="flex-1 overflow-y-auto px-6 pb-6">
+          <!-- Encabezado del eje evaluativo -->
+          <div id="nd-axis-header" class="mb-6">
+            <span id="nd-axis-badge" class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-marca-100 text-marca-700 mb-3">Eixo 1</span>
+            <h2 id="nd-axis-title" class="font-display text-xl font-bold text-marca-900 leading-snug">Limites Emocionais</h2>
+            <p id="nd-axis-desc" class="text-sm text-marca-500 mt-2 leading-relaxed">Avaliamos sua capacidade de estabelecer e manter limites saudáveis em relacionamentos com pessoas dependentes químicas.</p>
+          </div>
+
+          <!-- Pregunta actual -->
+          <div id="nd-question-wrapper">
+            <p id="nd-question-text" class="font-display text-base font-semibold text-marca-800 leading-relaxed mb-5"></p>
+            <div id="nd-options-list" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- Botones de navegacion -->
+        <div id="nd-nav-buttons" class="shrink-0 px-6 pb-6 pt-2">
+          <button id="nd-btn-next" onclick="novo_diagnostico_avancar()" disabled class="w-full py-3.5 rounded-2xl font-semibold text-base bg-marca-100 text-marca-400 cursor-not-allowed transition-all duration-300">
+            Avançar
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay de pausa -->
+      <div id="nd-pause-overlay" class="hidden absolute inset-0 bg-marca-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+        <div class="bg-white rounded-3xl p-8 w-full max-w-sm text-center shadow-2xl">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-marca-100 flex items-center justify-center">
+            <svg class="w-8 h-8 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-marca-900 mb-2">Diagnóstico Pausado</h3>
+          <p class="text-sm text-marca-500 mb-6 leading-relaxed">Você pode retomar este questionário a qualquer momento. Suas respostas foram salvas.</p>
+          <div class="space-y-3">
+            <button onclick="novo_diagnostico_retomar()" class="w-full py-3.5 rounded-2xl font-semibold text-base bg-marca-500 text-white active:scale-95 transition-all shadow-lg shadow-marca-500/30">Retomar Questionário</button>
+            <button onclick="novo_diagnostico_sair()" class="w-full py-3.5 rounded-2xl font-semibold text-base bg-marca-50 text-marca-600 active:scale-95 transition-all">Sair</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay de loading final -->
+      <div id="nd-loading-overlay" class="hidden absolute inset-0 bg-white z-50 flex flex-col items-center justify-center p-8">
+        <div class="relative mb-8">
+          <div class="w-20 h-20 rounded-full border-4 border-marca-100 border-t-marca-500 animate-spin"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <svg class="w-8 h-8 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          </div>
+        </div>
+        <h3 class="font-display text-lg font-bold text-marca-900 mb-2 text-center">Processando suas respostas</h3>
+        <p class="text-sm text-marca-400 text-center leading-relaxed">Com base na metodologia, estamos analisando suas respostas para gerar o relatório detalhado...</p>
+        <div class="mt-6 w-48 h-1.5 bg-marca-100 rounded-full overflow-hidden">
+          <div id="nd-loading-bar" class="h-full bg-marca-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+    (function() {
+      var questions = [
+        { axis: 'Limites Emocionais', axisNum: 'Eixo 1', axisColor: 'marca', text: 'Quando a pessoa dependente tenta manipular você emocionalmente para conseguir o que quer, você consegue identificar e resistir?', options: ['Nunca consigo identificar no momento', 'Raramente — geralmente percebo depois', 'Às vezes — depende da situação', 'Frequentemente consigo perceber e me manter firme', 'Sempre consigo identificar e manter meu limite'] },
+        { axis: 'Limites Emocionais', axisNum: 'Eixo 1', axisColor: 'marca', text: 'Você sente culpa excessiva quando precisa impor um limite para a pessoa dependente?', options: ['Sempre — a culpa é avassaladora', 'Quase sempre — a culpa é forte', 'Às vezes — depende do limite', 'Raramente — entendo que é necessário', 'Nunca — sei que limites são saudáveis'] },
+        { axis: 'Limites Pragmáticos', axisNum: 'Eixo 2', axisColor: 'destaque', text: 'Quando a pessoa dependente pede dinheiro emprestado sabendo que não poderá devolver, como você reage?', options: ['Sempre empresto, sem questionar', 'Geralmente empresto mesmo hesitando', 'Depende do valor e da situação', 'Raramente empresto — busco alternativas', 'Nunca empresto — estabeleço esse limite claramente'] },
+        { axis: 'Limites Pragmáticos', axisNum: 'Eixo 2', axisColor: 'destaque', text: 'Você cede a pedidos da pessoa dependente mesmo sabendo que isso pode prejudicar sua recuperação?', options: ['Sim, sempre cedo', 'Geralmente cedo por medo de conflito', 'Às vezes cedo, às vezes resisto', 'Raramente cedo — priorizo a recuperação', 'Nunca cedo — entendo o impacto no tratamento'] },
+        { axis: 'Sinais de Comportamento Nocivo', axisNum: 'Eixo 3', axisColor: 'alerta', text: 'Você já escondeu o comportamento da pessoa dependente de amigos ou familiares para "proteger" a imagem dela?', options: ['Sim, frequentemente escondo', 'Sim, já escondi algumas vezes', 'Às vezes, dependendo da situação', 'Raramente — prefiro ser transparente', 'Nunca — acredito na transparência total'] },
+        { axis: 'Sinais de Comportamento Nocivo', axisNum: 'Eixo 3', axisColor: 'alerta', text: 'Você sente que a vida do dependente é mais importante do que a sua própria?', options: ['Sim, sempre coloco ele(a) primeiro', 'Geralmente coloco ele(a) em primeiro lugar', 'Às vezes priorizo a mim mesma, às vezes não', 'Raramente — tento equilibrar as necessidades', 'Não — minhas necessidades também são importantes'] },
+        { axis: 'Necessidade de Intervenção', axisNum: 'Eixo 4', axisColor: 'urgencia', text: 'A pessoa dependente já expressou ideação suicida ou você suspeita de risco grave?', options: ['Sim, é uma situação atual urgente', 'Sim, aconteceu recentemente', 'Já houve menções mas não atualmente', 'Houve sinais mas sem ideação explícita', 'Nunca houve sinais desse tipo'] },
+        { axis: 'Necessidade de Intervenção', axisNum: 'Eixo 4', axisColor: 'urgencia', text: 'Você se sente fisicamente ou emocionalmente insegura(o) perto da pessoa dependente?', options: ['Sim, já houve agressão física', 'Sim, há ameaças verbais constantes', 'Às vezes me sinto intimidada(o)', 'Raramente me sinto desconfortável', 'Nunca me sinto insegura(o)'] },
+        { axis: 'Regulação Emocional', axisNum: 'Eixo 5', axisColor: 'regulacao', text: 'Quando a pessoa dependente tem uma recaída, qual é a sua reação emocional inicial?', options: ['Pânico total — minha vida desaba', 'Desespero intenso e ansiedade', 'Tristeza profunda, mas consigo funcionar', 'Frustração — busco retomar o controle', 'Aceitação — entendo como parte do processo'] },
+        { axis: 'Regulação Emocional', axisNum: 'Eixo 5', axisColor: 'regulacao', text: 'Você tem práticas regulares de autocuidado e regulação emocional?', options: ['Não tenho nenhuma prática', 'Raramente pratico autocuidado', 'Às vezes, quando consigo tempo', 'Tenho algumas práticas regulares', 'Sim, mantenho uma rotina consistente de autocuidado'] },
+        { axis: 'Desenvolvimento Humano e Metas', axisNum: 'Eixo 6', axisColor: 'metas', text: 'Você tem metas pessoais que não envolvem a pessoa dependente?', options: ['Não — tudo gira em torno dela', 'Raramente penso em minhas próprias metas', 'Tenho algumas metas mas pouco foco', 'Tenho metas e trabalho nelas quando posso', 'Sim, metas bem definidas que persigo ativamente'] },
+        { axis: 'Desenvolvimento Humano e Metas', axisNum: 'Eixo 6', axisColor: 'metas', text: 'Você sente que está evoluindo como pessoa independente do progresso da pessoa dependente?', options: ['Não — minha evolução está travada', 'Quase não percebo minha evolução', 'Sinto evolução lenta e gradual', 'Percebo evolução consistente', 'Sim — estou crescendo independentemente'] }
+      ];
+
+      var current = 0;
+      var answers = [];
+      var transitioning = false;
+      var userName = 'Carla';
+
+      function novo_diagnostico_iniciar() {
+        current = 0;
+        answers = new Array(questions.length).fill(-1);
+        transitioning = false;
+        document.getElementById('nd-loading-overlay').classList.add('hidden');
+        document.getElementById('nd-questions-area').classList.remove('opacity-0');
+        document.getElementById('nd-nav-buttons').classList.remove('hidden');
+        renderQuestion();
+      }
+
+      function novo_diagnostico_render() {
+        var q = questions[current];
+        document.getElementById('nd-axis-badge').textContent = q.axisNum;
+        document.getElementById('nd-axis-badge').className = 'inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 ' + (current < 2 ? 'bg-marca-100 text-marca-700' : current < 4 ? 'bg-amber-100 text-amber-700' : current < 6 ? 'bg-red-100 text-red-700' : current < 8 ? 'bg-rose-100 text-rose-700' : current < 10 ? 'bg-teal-100 text-teal-700' : 'bg-indigo-100 text-indigo-700');
+        document.getElementById('nd-axis-title').textContent = q.axis;
+        var descs = [
+          'Avaliamos sua capacidade de estabelecer e manter limites saudáveis em relacionamentos com pessoas dependentes químicas.',
+          'Avaliamos como você gerencia recursos e estabelece limites práticos no apoio a uma pessoa dependente química.',
+          'Identificamos comportamentos que podem estar atrapalhando o processo de recuperação do ente querido.',
+          'Avaliamos sinais que indicam necessidade de intervenção profissional urgente.',
+          'Avaliamos suas estratégias de regulação emocional durante situações de crise relacionadas à dependência.',
+          'Avaliamos seu desenvolvimento pessoal e alcance de metas independentes da situação da pessoa dependente.'
+        ];
+        document.getElementById('nd-axis-desc').textContent = descs[Math.floor(current / 2)] || descs[0];
+
+        var questionEl = document.getElementById('nd-question-text');
+        questionEl.textContent = q.text;
+
+        var optionsList = document.getElementById('nd-options-list');
+        optionsList.innerHTML = '';
+
+        q.options.forEach(function(opt, i) {
+          var isSelected = answers[current] === i;
+          var div = document.createElement('div');
+          div.className = 'card-option cursor-pointer rounded-2xl border-2 p-4 transition-all duration-300 ' + (isSelected ? 'border-marca-500 bg-marca-50 shadow-md shadow-marca-500/10' : 'border-marca-100 bg-white hover:border-marca-300 hover:shadow-md active:scale-[0.98]');
+          div.setAttribute('data-option', i);
+          div.innerHTML = '<div class="flex items-start gap-3"><div class="shrink-0 mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 ' + (isSelected ? 'border-marca-500 bg-marca-500' : 'border-marca-300') + '">' + (isSelected ? '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : '') + '</div><span class="text-sm text-marca-700 leading-relaxed pt-0.5">' + opt + '</span></div>';
+          div.addEventListener('click', function() { novo_diagnostico_selecionar(i); });
+          optionsList.appendChild(div);
+        });
+
+        var total = questions.length;
+        var pct = Math.round(((current + 1) / total) * 100);
+        document.getElementById('nd-progress-bar').style.width = pct + '%';
+        document.getElementById('nd-progress-text').textContent = 'Questão ' + (current + 1) + ' de ' + total;
+
+        var btnNext = document.getElementById('nd-btn-next');
+        btnNext.disabled = true;
+        btnNext.className = 'w-full py-3.5 rounded-2xl font-semibold text-base bg-marca-100 text-marca-400 cursor-not-allowed transition-all duration-300';
+        btnNext.textContent = current < total - 1 ? 'Avançar' : 'Finalizar Diagnóstico';
+      }
+
+      function renderQuestion() {
+        var wrapper = document.getElementById('nd-question-wrapper');
+        wrapper.style.opacity = '0';
+        wrapper.style.transform = 'translateX(30px)';
+        wrapper.style.transition = 'none';
+        setTimeout(function() {
+          novo_diagnostico_render();
+          wrapper.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          wrapper.style.opacity = '1';
+          wrapper.style.transform = 'translateX(0)';
+        }, 150);
+      }
+
+      function novo_diagnostico_selecionar(index) {
+        answers[current] = index;
+        var opts = document.querySelectorAll('.card-option');
+        opts.forEach(function(el, i) {
+          if (i === index) {
+            el.classList.remove('border-marca-100', 'bg-white', 'hover:border-marca-300');
+            el.classList.add('border-marca-500', 'bg-marca-50', 'shadow-md', 'shadow-marca-500/10');
+            var radio = el.querySelector('.w-5');
+            radio.classList.remove('border-marca-300', 'bg-transparent');
+            radio.classList.add('border-marca-500', 'bg-marca-500');
+            radio.innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+          } else {
+            el.classList.add('border-marca-100', 'bg-white', 'hover:border-marca-300');
+            el.classList.remove('border-marca-500', 'bg-marca-50', 'shadow-md', 'shadow-marca-500/10');
+            var radio = el.querySelector('.w-5');
+            radio.classList.add('border-marca-300', 'bg-transparent');
+            radio.classList.remove('border-marca-500', 'bg-marca-500');
+            radio.innerHTML = '';
+          }
+        });
+        var btnNext = document.getElementById('nd-btn-next');
+        btnNext.disabled = false;
+        btnNext.className = 'w-full py-3.5 rounded-2xl font-semibold text-base bg-marca-500 text-white active:scale-95 transition-all shadow-lg shadow-marca-500/30 hover:bg-marca-600 cursor-pointer';
+      }
+
+      function novo_diagnostico_avancar() {
+        if (answers[current] < 0 || transitioning) return;
+        transitioning = true;
+        var total = questions.length;
+        if (current < total - 1) {
+          current++;
+          var wrapper = document.getElementById('nd-question-wrapper');
+          wrapper.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          wrapper.style.opacity = '0';
+          wrapper.style.transform = 'translateX(-30px)';
+          setTimeout(function() {
+            renderQuestion();
+            transitioning = false;
+          }, 300);
+        } else {
+          novo_diagnostico_finalizar();
+        }
+      }
+
+      function novo_diagnostico_finalizar() {
+        var area = document.getElementById('nd-questions-area');
+        area.classList.add('opacity-0');
+        document.getElementById('nd-nav-buttons').classList.add('hidden');
+        document.getElementById('nd-header').classList.add('opacity-0');
+        setTimeout(function() {
+          document.getElementById('nd-loading-overlay').classList.remove('hidden');
+          var bar = document.getElementById('nd-loading-bar');
+          setTimeout(function() { bar.style.width = '40%'; }, 200);
+          setTimeout(function() { bar.style.width = '70%'; }, 800);
+          setTimeout(function() { bar.style.width = '100%'; }, 1600);
+          setTimeout(function() {
+            document.getElementById('nd-loading-overlay').classList.add('hidden');
+            document.getElementById('nd-header').classList.remove('hidden');
+            area.classList.remove('opacity-0');
+            document.getElementById('nd-nav-buttons').classList.remove('hidden');
+            transitioning = false;
+            mostrarTela('meu-resultado');
+          }, 2200);
+        }, 400);
+      }
+
+      function novo_diagnostico_pausar() {
+        document.getElementById('nd-pause-overlay').classList.remove('hidden');
+      }
+
+      function novo_diagnostico_retomar() {
+        document.getElementById('nd-pause-overlay').classList.add('hidden');
+        toast('Diagnóstico retomado! Continue de onde parou.', 'info');
+      }
+
+      function novo_diagnostico_sair() {
+        document.getElementById('nd-pause-overlay').classList.add('hidden');
+        mostrarTela('visao-geral');
+      }
+
+      window.novo_diagnostico_iniciar = novo_diagnostico_iniciar;
+      window.novo_diagnostico_pausar = novo_diagnostico_pausar;
+      window.novo_diagnostico_retomar = novo_diagnostico_retomar;
+      window.novo_diagnostico_sair = novo_diagnostico_sair;
+
+      var observer = new MutationObserver(function() {
+        if (document.getElementById('nd-container') && !document.getElementById('nd-container').classList.contains('hidden')) {
+          novo_diagnostico_iniciar();
+        }
+      });
+      observer.observe(document.getElementById('nd-container'), { attributes: true, attributeFilter: ['class'] });
+    })();
+    </script>
+
     <!-- TELAS -->
 
     </main>
