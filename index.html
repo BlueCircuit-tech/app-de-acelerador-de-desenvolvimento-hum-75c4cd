@@ -3012,6 +3012,408 @@
 
 Navegação: voltar para Visão Geral, botões de chamada de voz/vídeo, perfil do coach, configurações, atalhos levam a destinos válidos (solicitar retorno envia mensagem, agendar abre modal com horários e confirma, emergência abre modal com regulacao emocional + mostrarTela('meus-alertas')). Todos os botões e ícones têm handler. O emoji insere no input, áudio envia placeholder, anexo retorna toast. Scroll infinito preparado via container scrollável.
 
+    <section data-tela="painel-profissional" class="hidden">
+    <div class="painel-profissional-fade">
+        <!-- Cabeçalho -->
+        <div class="mb-6">
+            <h1 class="font-display text-xl font-bold text-marca-900">Painel Profissional</h1>
+            <p class="text-sm text-gray-500 mt-0.5">Acompanhe o progresso dos seus acompanhados</p>
+        </div>
+
+        <!-- Cards KPI -->
+        <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-gray-500 font-medium">Usuários Ativos</span>
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <p class="font-display text-2xl font-bold text-marca-900" id="kpi-ativos">38</p>
+                <p class="text-xs text-green-600 mt-1">↑ 4 esta semana</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-gray-500 font-medium">Alertas de Urgência</span>
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <p class="font-display text-2xl font-bold text-red-600" id="kpi-alertas">3</p>
+                <p class="text-xs text-red-500 mt-1">↓ 2 desde ontem</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-gray-500 font-medium">Desenvolvimento Semanal</span>
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <p class="font-display text-2xl font-bold text-marca-900">72%</p>
+                <p class="text-xs text-green-600 mt-1">↑ 5% vs. semana anterior</p>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-gray-500 font-medium">Taxa de Engajamento</span>
+                    <svg class="w-5 h-5 text-marca-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <p class="font-display text-2xl font-bold text-marca-900">84%</p>
+                <p class="text-xs text-green-600 mt-1">↑ 3% vs. semana anterior</p>
+            </div>
+        </div>
+
+        <!-- Gráfico de Engajamento Semanal -->
+        <div class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm mb-5">
+            <h3 class="font-display text-sm font-semibold text-marca-900 mb-3">Engajamento Semanal</h3>
+            <svg viewBox="0 0 340 120" class="w-full h-28">
+                <defs>
+                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#2563EB" stop-opacity="0.2"/>
+                        <stop offset="100%" stop-color="#2563EB" stop-opacity="0.01"/>
+                    </linearGradient>
+                </defs>
+                <polyline fill="url(#chartGrad)" stroke="none" points="0,90 40,75 80,60 120,68 160,45 200,50 240,30 280,25 320,15 340,90 340,90 0,90"/>
+                <polyline fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="0,90 40,75 80,60 120,68 160,45 200,50 240,30 280,25 320,15 340,22"/>
+                <circle cx="40" cy="75" r="3.5" fill="#1E3A5F"/>
+                <circle cx="80" cy="60" r="3.5" fill="#1E3A5F"/>
+                <circle cx="120" cy="68" r="3.5" fill="#1E3A5F"/>
+                <circle cx="160" cy="45" r="3.5" fill="#1E3A5F"/>
+                <circle cx="200" cy="50" r="3.5" fill="#1E3A5F"/>
+                <circle cx="240" cy="30" r="3.5" fill="#1E3A5F"/>
+                <circle cx="280" cy="25" r="3.5" fill="#1E3A5F"/>
+                <circle cx="320" cy="15" r="3.5" fill="#2563EB" stroke="white" stroke-width="2"/>
+                <text x="0" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Seg</text>
+                <text x="48" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Ter</text>
+                <text x="96" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Qua</text>
+                <text x="144" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Qui</text>
+                <text x="192" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Sex</text>
+                <text x="240" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Sáb</text>
+                <text x="288" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Dom</text>
+                <text x="340" y="108" text-anchor="middle" class="text-[9px] fill-gray-400">Hoje</text>
+            </svg>
+        </div>
+
+        <!-- Navegação por Abas -->
+        <div class="flex bg-gray-100 rounded-lg p-0.5 mb-4">
+            <button onclick="painel_profissional_mudarAba('usuarios')" id="aba-usuarios" class="painel-aba flex-1 py-2 px-2 text-xs font-semibold rounded-md bg-white text-marca-900 shadow-sm transition-all">Usuários</button>
+            <button onclick="painel_profissional_mudarAba('alertas')" id="aba-alertas" class="painel-aba flex-1 py-2 px-2 text-xs font-semibold rounded-md text-gray-500 transition-all">Alertas</button>
+            <button onclick="painel_profissional_mudarAba('relatorios')" id="aba-relatorios" class="painel-aba flex-1 py-2 px-2 text-xs font-semibold rounded-md text-gray-500 transition-all">Relatórios</button>
+        </div>
+
+        <!-- ========== ABA USUÁRIOS ========== -->
+        <div id="painel-content-usuarios" class="painel-content">
+            <!-- Busca e Filtro -->
+            <div class="flex gap-2 mb-3">
+                <div class="relative flex-1">
+                    <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" id="painel-busca" placeholder="Buscar usuário..." class="w-full pl-9 pr-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-500 focus:border-marca-500 transition-all" oninput="painel_profissional_filtrarUsuarios()">
+                </div>
+                <select id="painel-filtro-risco" class="px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-marca-500 appearance-none" onchange="painel_profissional_filtrarUsuarios()">
+                    <option value="todos">Todos</option>
+                    <option value="critico">Crítico</option>
+                    <option value="alto">Alto</option>
+                    <option value="moderado">Moderado</option>
+                    <option value="baixo">Baixo</option>
+                    <option value="estavel">Estável</option>
+                </select>
+            </div>
+
+            <!-- Tabela de Usuários -->
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="text-left py-3 px-3 text-xs font-semibold text-gray-500">Usuário</th>
+                                <th class="text-left py-3 px-2 text-xs font-semibold text-gray-500">Nível</th>
+                                <th class="text-left py-3 px-2 text-xs font-semibold text-gray-500 hidden sm:table-cell">Último Check-in</th>
+                                <th class="text-right py-3 px-3 text-xs font-semibold text-gray-500">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="painel-tabela-usuarios"></tbody>
+                    </table>
+                </div>
+                <div id="painel-vazio-usuarios" class="hidden py-10 text-center">
+                    <svg class="w-10 h-10 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <p class="text-sm text-gray-400">Nenhum usuário encontrado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== ABA ALERTAS ========== -->
+        <div id="painel-content-alertas" class="painel-content hidden">
+            <div id="painel-lista-alertas"></div>
+            <div id="painel-vazio-alertas" class="hidden py-10 text-center">
+                <svg class="w-10 h-10 text-green-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-sm text-gray-400">Nenhum alerta pendente no momento</p>
+            </div>
+        </div>
+
+        <!-- ========== ABA RELATÓRIOS ========== -->
+        <div id="painel-content-relatorios" class="painel-content hidden">
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-3">
+                <h3 class="font-display text-sm font-semibold text-marca-900 mb-3">Visão Geral do Grupo</h3>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-marca-50 rounded-lg p-3 text-center">
+                        <p class="font-display text-xl font-bold text-marca-900">38</p>
+                        <p class="text-xs text-gray-500">Total de Acompanhados</p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-3 text-center">
+                        <p class="font-display text-xl font-bold text-green-700">23</p>
+                        <p class="text-xs text-gray-500">Em Progresso</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-lg p-3 text-center">
+                        <p class="font-display text-xl font-bold text-amber-700">8</p>
+                        <p class="text-xs text-gray-500">Alerta Moderado</p>
+                    </div>
+                    <div class="bg-red-50 rounded-lg p-3 text-center">
+                        <p class="font-display text-xl font-bold text-red-600">3</p>
+                        <p class="text-xs text-gray-500">Risco Crítico</p>
+                    </div>
+                </div>
+                <!-- Gráfico de Nível de Codependência (donut) -->
+                <div class="flex items-center justify-center">
+                    <svg viewBox="0 0 160 160" class="w-36 h-36">
+                        <circle cx="80" cy="80" r="55" fill="none" stroke="#F1F5F9" stroke-width="20"/>
+                        <circle cx="80" cy="80" r="55" fill="none" stroke="#2563EB" stroke-width="20" stroke-dasharray="103 345" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                        <circle cx="80" cy="80" r="55" fill="none" stroke="#3B82F6" stroke-width="20" stroke-dasharray="69 345" stroke-dashoffset="-103" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                        <circle cx="80" cy="80" r="55" fill="none" stroke="#F59E0B" stroke-width="20" stroke-dasharray="55 345" stroke-dashoffset="-172" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                        <circle cx="80" cy="80" r="55" fill="none" stroke="#EF4444" stroke-width="20" stroke-dasharray="34 345" stroke-dashoffset="-227" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                        <text x="80" y="76" text-anchor="middle" class="text-lg font-bold fill-marca-900 font-display">38</text>
+                        <text x="80" y="92" text-anchor="middle" class="text-[9px] fill-gray-400">acompanhados</text>
+                    </svg>
+                    <div class="ml-3 space-y-1.5">
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-marca-600"></span><span class="text-xs text-gray-600">Baixo (30%)</span></div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span><span class="text-xs text-gray-600">Moderado (18%)</span></div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span><span class="text-xs text-gray-600">Alto (15%)</span></div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span><span class="text-xs text-gray-600">Crítico (10%)</span></div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="toast('Relatório exportado com sucesso','ok');painel_profissional_botaoExportar(this)" class="btn w-full py-3 bg-marca-600 hover:bg-marca-700 text-white font-semibold rounded-xl text-sm transition-all active:scale-95 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Exportar Relatório Completo
+            </button>
+        </div>
+
+        <!-- Modal: Ficha do Usuário -->
+        <div id="modal-usuario-overlay" class="fixed inset-0 bg-black/50 z-50 hidden items-end sm:items-center justify-center p-0 sm:p-4">
+            <div id="modal-usuario-content" class="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
+                <div id="modal-usuario-body"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+var painel_profissional_usuarios = [
+    { id: 1, nome: 'Maria Helena Ribeiro', foto: null, iniciais: 'MR', corAvatar: '#1E3A5F', nivel: 'critico', nivelLabel: 'Crítico', ultimoCheckin: '2025-07-14', alertasPendentes: 2, objetivo: 'Reduzir ansiedade de separação', progresso: 34 },
+    { id: 2, nome: 'Ana Cristina Lopes', foto: null, iniciais: 'AL', corAvatar: '#2563EB', nivel: 'alto', nivelLabel: 'Alto', ultimoCheckin: '2025-07-13', alertasPendentes: 1, objetivo: 'Estabelecer limites saudáveis', progresso: 45 },
+    { id: 3, nome: 'Rosângela Ferreira Dias', foto: null, iniciais: 'RF', corAvatar: '#7C3AED', nivel: 'moderado', nivelLabel: 'Moderado', ultimoCheckin: '2025-07-14', alertasPendentes: 0, objetivo: 'Autoconhecimento emocional', progresso: 62 },
+    { id: 4, nome: 'Patrícia Souza Andrade', foto: null, iniciais: 'PS', corAvatar: '#DB2777', nivel: 'baixo', nivelLabel: 'Baixo', ultimoCheckin: '2025-07-12', alertasPendentes: 0, objetivo: 'Manter equilíbrio emocional', progresso: 78 },
+    { id: 5, nome: 'Sônia Regina Oliveira', foto: null, iniciais: 'SO', corAvatar: '#059669', nivel: 'estavel', nivelLabel: 'Estável', ultimoCheckin: '2025-07-14', alertasPendentes: 0, objetivo: 'Consolidar hábitos de regulação', progresso: 91 },
+    { id: 6, nome: 'Cláudia Moreira Costa', foto: null, iniciais: 'CM', corAvatar: '#D97706', nivel: 'alto', nivelLabel: 'Alto', ultimoCheckin: '2025-07-10', alertasPendentes: 1, objetivo: 'Reduzir comportamentos de controle', progresso: 41 },
+    { id: 7, nome: 'Vera Lúcia Pereira', foto: null, iniciais: 'VP', corAvatar: '#1E3A5F', nivel: 'moderado', nivelLabel: 'Moderado', ultimoCheckin: '2025-07-13', alertasPendentes: 0, objetivo: 'Processar luto e separação', progresso: 55 },
+    { id: 8, nome: 'Lucia Fátima Borges', foto: null, iniciais: 'LB', corAvatar: '#2563EB', nivel: 'critico', nivelLabel: 'Crítico', ultimoCheckin: '2025-07-14', alertasPendentes: 2, objetivo: 'Intervenção de urgência — risco iminente', progresso: 22 },
+    { id: 9, nome: 'Mariana Campos Viegas', foto: null, iniciais: 'MV', corAvatar: '#7C3AED', nivel: 'baixo', nivelLabel: 'Baixo', ultimoCheckin: '2025-07-11', alertasPendentes: 0, objetivo: 'Fortalecer rede de apoio', progresso: 73 },
+    { id: 10, nome: 'Ester Duarte Neves', foto: null, iniciais: 'ED', corAvatar: '#DB2777', nivel: 'estavel', nivelLabel: 'Estável', ultimoCheckin: '2025-07-14', alertasPendentes: 0, objetivo: 'Manter práticas de autocuidado', progresso: 88 }
+];
+
+var painel_profissional_diagnosticos = [
+    { data: '2025-01-15', tipo: 'Diagnóstico Inicial', resultado: 'Codependência Severa — Fase Crítica', profissional: 'Dra. Regina Mendes' },
+    { data: '2025-02-20', tipo: 'Reavaliação', resultado: 'Codependência Alta — Sinais de progresso', profissional: 'Dra. Regina Mendes' },
+    { data: '2025-04-10', tipo: 'Reavaliação', resultado: 'Codependência Moderada — Melhora consistente', profissional: 'Dr. Carlos Eduardo' },
+    { data: '2025-06-05', tipo: 'Reavaliação', resultado: 'Codependência Baixa — Quase remissão', profissional: 'Dra. Regina Mendes' }
+];
+
+var painel_profissional_alertas_hist = [
+    { data: '2025-07-14', tipo: 'urgencia', msg: 'Comportamento de risco identificado: contato com dependente em abstinência instável' },
+    { data: '2025-07-08', tipo: 'comportamental', msg: 'Padrão de negação recorrente nas últimas 3 sessões' },
+    { data: '2025-06-25', tipo: 'comportamental', msg: 'Baixa aderência às metas pactuadas — apenas 2 de 5 metas cumpridas' },
+    { data: '2025-06-10', tipo: 'urgencia', msg: 'Relato de crise emocional intensa após visita ao ente dependente' },
+    { data: '2025-05-20', tipo: 'info', msg: 'Sinal positivo: atingiu 80% das metas semanais pela primeira vez' }
+];
+
+var painel_profissional_metas = [
+    { mes: 'Jan', valor: 15 }, { mes: 'Fev', valor: 25 }, { mes: 'Mar', valor: 30 },
+    { mes: 'Abr', valor: 42 }, { mes: 'Mai', valor: 50 }, { mes: 'Jun', valor: 65 },
+    { mes: 'Jul', valor: 78 }
+];
+
+var painel_profissional_alertasPendentes = [
+    { id: 1, usuario: 'Maria Helena Ribeiro', tipo: 'urgencia', msg: 'Comportamento de risco identificado: contato não autorizado', data: '2025-07-14 14:30' },
+    { id: 2, usuario: 'Cláudia Moreira Costa', tipo: 'urgencia', msg: 'Relato de ideação suicida em sessão anterior', data: '2025-07-12 09:15' },
+    { id: 3, usuario: 'Lucia Fátima Borges', tipo: 'urgencia', msg: 'Risco de recaída iminente — não responde há 48h', data: '2025-07-14 08:45' }
+];
+
+function painel_profissional_mudarAba(aba) {
+    document.querySelectorAll('.painel-aba').forEach(function(b) {
+        b.classList.remove('bg-white', 'text-marca-900', 'shadow-sm');
+        b.classList.add('text-gray-500');
+    });
+    document.querySelectorAll('.painel-content').forEach(function(c) { c.classList.add('hidden'); });
+    var elAba = document.getElementById('aba-' + aba);
+    elAba.classList.add('bg-white', 'text-marca-900', 'shadow-sm');
+    elAba.classList.remove('text-gray-500');
+    document.getElementById('painel-content-' + aba).classList.remove('hidden');
+}
+
+function painel_profissional_obterNivelCor(nivel) {
+    var map = { critico: 'bg-red-100 text-red-700', alto: 'bg-orange-100 text-orange-700', moderado: 'bg-amber-100 text-amber-700', baixo: 'bg-blue-100 text-blue-700', estavel: 'bg-green-100 text-green-700' };
+    return map[nivel] || 'bg-gray-100 text-gray-600';
+}
+
+function painel_profissional_obterNivelDot(nivel) {
+    var map = { critico: 'bg-red-500', alto: 'bg-orange-500', moderado: 'bg-amber-500', baixo: 'bg-blue-500', estavel: 'bg-green-500' };
+    return map[nivel] || 'bg-gray-400';
+}
+
+function painel_profissional_formatarDataBR(iso) {
+    if (!iso) return '—';
+    var p = iso.split('-');
+    return p[2] + '/' + p[1] + '/' + p[0];
+}
+
+function painel_profissional_abrirFicha(id) {
+    var u = painel_profissional_usuarios.find(function(x) { return x.id === id; });
+    if (!u) return;
+    var diagsHTML = painel_profissional_diagnosticos.map(function(d) {
+        return '<div class="flex gap-3 py-2 border-b border-gray-50 last:border-0"><div class="w-2 h-2 rounded-full bg-marca-400 mt-1.5 shrink-0"></div><div><p class="text-xs font-medium text-marca-900">' + d.tipo + '</p><p class="text-xs text-gray-500">' + painel_profissional_formatarDataBR(d.data) + ' — ' + d.resultado + '</p><p class="text-[10px] text-gray-400 mt-0.5">' + d.profissional + '</p></div></div>';
+    }).join('');
+    var alertasHTML = painel_profissional_alertas_hist.map(function(a) {
+        var cor = a.tipo === 'urgencia' ? 'text-red-600 bg-red-50' : a.tipo === 'comportamental' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
+        return '<div class="flex gap-3 py-2 border-b border-gray-50 last:border-0"><div class="w-2 h-2 rounded-full mt-1.5 shrink-0 ' + (a.tipo === 'urgencia' ? 'bg-red-400' : a.tipo === 'comportamental' ? 'bg-amber-400' : 'bg-green-400') + '"></div><div><p class="text-xs font-medium text-gray-800">' + a.msg + '</p><p class="text-[10px] text-gray-400 mt-0.5">' + painel_profissional_formatarDataBR(a.data) + '</p></div></div>';
+    }).join('');
+    var maxVal = Math.max.apply(null, painel_profissional_metas.map(function(m) { return m.valor; }));
+    var barras = painel_profissional_metas.map(function(m) {
+        var h = Math.max(4, (m.valor / maxVal) * 80);
+        return '<div class="flex flex-col items-center gap-1"><div class="w-5 bg-marca-100 rounded-sm relative" style="height:80px"><div class="absolute bottom-0 w-full bg-marca-600 rounded-sm transition-all" style="height:' + h + 'px"></div></div><span class="text-[9px] text-gray-400">' + m.mes + '</span></div>';
+    }).join('');
+
+    var corpo = '<div class="relative">' +
+        '<div class="h-24 rounded-t-2xl" style="background:linear-gradient(135deg,' + u.corAvatar + '22,#1E3A5F15)"></div>' +
+        '<button onclick="painel_profissional_fecharFicha()" class="absolute top-4 right-4 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-all active:scale-90"><svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>' +
+        '<div class="px-5 -mt-12 mb-4">' +
+        '<div class="w-20 h-20 rounded-full flex items-center justify-center text-white text-xl font-bold border-4 border-white shadow-lg" style="background:' + u.corAvatar + '">' + u.iniciais + '</div>' +
+        '<h2 class="font-display text-lg font-bold text-marca-900 mt-3">' + u.nome + '</h2>' +
+        '<p class="text-sm text-gray-500">Objetivo: ' + u.objetivo + '</p>' +
+        '<div class="flex items-center gap-3 mt-2"><span class="badge ' + painel_profissional_obterNivelCor(u.nivel) + '">' + u.nivelLabel + '</span><span class="text-xs text-gray-400">Check-in: ' + painel_profissional_formatarDataBR(u.ultimoCheckin) + '</span></div>' +
+        '</div></div>' +
+        '<div class="px-5 pb-5">' +
+        '<div class="bg-marca-50 rounded-xl p-4 mb-4"><div class="flex justify-between items-center mb-1"><span class="text-xs text-marca-700 font-medium">Progresso do Objetivo</span><span class="text-sm font-bold text-marca-900">' + u.progresso + '%</span></div><div class="w-full h-2 bg-marca-200 rounded-full overflow-hidden"><div class="h-full bg-marca-600 rounded-full transition-all" style="width:' + u.progresso + '%"></div></div></div>' +
+        '<h3 class="font-display text-sm font-semibold text-marca-900 mb-2">📊 Evolução de Metas</h3>' +
+        '<div class="bg-gray-50 rounded-xl p-3 mb-4"><div class="flex items-end gap-2 justify-center">' + barras + '</div><p class="text-[10px] text-gray-400 text-center mt-2">Progresso mensal (%)</p></div>' +
+        '<h3 class="font-display text-sm font-semibold text-marca-900 mb-2">📋 Histórico de Diagnósticos</h3>' +
+        '<div class="bg-gray-50 rounded-xl p-3 mb-4">' + diagsHTML + '</div>' +
+        '<h3 class="font-display text-sm font-semibold text-marca-900 mb-2">🔔 Alertas Gerados</h3>' +
+        '<div class="bg-gray-50 rounded-xl p-3 mb-5">' + alertasHTML + '</div>' +
+        '<div class="flex gap-2"><button onclick="toast(\'Mensagem enviada para ' + u.nome.split(' ')[0] + '\',\'ok\');painel_profissional_fecharFicha()" class="btn flex-1 py-2.5 bg-marca-600 hover:bg-marca-700 text-white font-semibold rounded-xl text-sm transition-all active:scale-95">Enviar Mensagem</button><button onclick="toast(\'Agendamento criado\',\'ok\');painel_profissional_fecharFicha()" class="btn flex-1 py-2.5 border border-marca-600 text-marca-600 font-semibold rounded-xl text-sm hover:bg-marca-50 transition-all active:scale-95">Agendar Sessão</button></div>' +
+        '</div></div>';
+
+    document.getElementById('modal-usuario-body').innerHTML = corpo;
+    var overlay = document.getElementById('modal-usuario-overlay');
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    overlay.onclick = function(e) { if (e.target === overlay) painel_profissional_fecharFicha(); };
+}
+
+function painel_profissional_fecharFicha() {
+    var overlay = document.getElementById('modal-usuario-overlay');
+    overlay.classList.add('hidden');
+    overlay.classList.remove('flex');
+}
+
+function painel_profissional_abrirAlerta(id) {
+    var a = painel_profissional_alertasPendentes.find(function(x) { return x.id === id; });
+    if (!a) return;
+    var corpo = '<div class="p-5">' +
+        '<div class="flex items-center gap-2 mb-4">' +
+        '<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center"><svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>' +
+        '<div><h3 class="font-display font-bold text-marca-900">Alerta de Urgência</h3><p class="text-xs text-gray-500">' + a.data + '</p></div>' +
+        '</div>' +
+        '<div class="bg-red-50 border border-red-100 rounded-xl p-4 mb-4"><p class="text-sm text-red-800 font-medium">' + a.usuario + '</p><p class="text-sm text-red-700 mt-1">' + a.msg + '</p></div>' +
+        '<p class="text-xs text-gray-500 mb-4">Este alerta indica necessidade de intervenção imediata. Entre em contato com o acompanhado ou responsável.</p>' +
+        '<div class="flex gap-2"><button onclick="painel_profissional_resolverAlerta(' + a.id + ')" class="btn flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all active:scale-95">Resolver Agora</button><button onclick="fecharModal()" class="btn flex-1 py-2.5 border border-gray-200 text-gray-600 font-semibold rounded-xl text-sm hover:bg-gray-50 transition-all active:scale-95">Apenas Visualizar</button></div>' +
+        '</div>';
+    abrirModal(corpo, 'Alerta de Urgência');
+}
+
+function painel_profissional_resolverAlerta(id) {
+    var idx = painel_profissional_alertasPendentes.findIndex(function(x) { return x.id === id; });
+    if (idx > -1) {
+        painel_profissional_alertasPendentes.splice(idx, 1);
+        document.getElementById('kpi-alertas').textContent = painel_profissional_alertasPendentes.length;
+    }
+    fecharModal();
+    painel_profissional_renderAlertas();
+    toast('Alerta resolvido com sucesso', 'ok');
+}
+
+function painel_profissional_renderAlertas() {
+    var container = document.getElementById('painel-lista-alerta');
+    var vazio = document.getElementById('painel-vazio-alerta');
+    if (!container) return;
+    if (painel_profissional_alertasPendentes.length === 0) {
+        container.innerHTML = '';
+        vazio.classList.remove('hidden');
+        return;
+    }
+    vazio.classList.add('hidden');
+    container.innerHTML = painel_profissional_alertasPendentes.map(function(a) {
+        return '<div class="bg-white rounded-xl border border-red-100 shadow-sm p-4 mb-3">' +
+            '<div class="flex items-start gap-3">' +
+            '<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>' +
+            '<div class="flex-1"><p class="text-sm font-medium text-marca-900">' + a.usuario + '</p><p class="text-xs text-gray-600 mt-0.5">' + a.msg + '</p><p class="text-[10px] text-gray-400 mt-1">' + a.data + '</p></div>' +
+            '</div>' +
+            '<button onclick="painel_profissional_abrirAlerta(' + a.id + ')" class="btn mt-3 w-full py-2 border border-red-200 text-red-600 font-semibold rounded-lg text-xs hover:bg-red-50 transition-all active:scale-95">Ver Detalhes</button>' +
+            '</div>';
+    }).join('');
+}
+
+function painel_profissional_obterNivelBadge(nivel) {
+    return '<span class="badge ' + painel_profissional_obterNivelCor(nivel) + ' text-[11px] px-2 py-0.5 rounded-full font-medium">' + (nivel === 'critico' ? 'Crítico' : nivel === 'alto' ? 'Alto' : nivel === 'moderado' ? 'Moderado' : nivel === 'baixo' ? 'Baixo' : 'Estável') + '</span>';
+}
+
+function painel_profissional_renderTabela(lista) {
+    var tbody = document.getElementById('painel-tabela-usuarios');
+    var vazio = document.getElementById('painel-vazio-usuarios');
+    if (lista.length === 0) {
+        tbody.innerHTML = '';
+        vazio.classList.remove('hidden');
+        return;
+    }
+    vazio.classList.add('hidden');
+    tbody.innerHTML = lista.map(function(u) {
+        return '<tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer" onclick="painel_profissional_abrirFicha(' + u.id + ')">' +
+            '<td class="py-3 px-3"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0" style="background:' + u.corAvatar + '">' + u.iniciais + '</div><span class="text-sm font-medium text-marca-900 truncate max-w-[130px]">' + u.nome + '</span></div></td>' +
+            '<td class="py-3 px-2">' + painel_profissional_obterNivelBadge(u.nivel) + '</td>' +
+            '<td class="py-3 px-2 hidden sm:table-cell"><span class="text-xs text-gray-500">' + painel_profissional_formatarDataBR(u.ultimoCheckin) + '</span></td>' +
+            '<td class="py-3 px-3 text-right"><button onclick="event.stopPropagation();painel_profissional_abrirFicha(' + u.id + ')" class="p-1.5 text-marca-600 hover:bg-marca-50 rounded-lg transition-all active:scale-90"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button></td>' +
+            '</tr>';
+    }).join('');
+}
+
+function painel_profissional_filtrarUsuarios() {
+    var busca = (document.getElementById('painel-busca').value || '').toLowerCase().trim();
+    var filtro = document.getElementById('painel-filtro-risco').value;
+    var lista = painel_profissional_usuarios.filter(function(u) {
+        var matchNome = !busca || u.nome.toLowerCase().indexOf(busca) > -1;
+        var matchFiltro = filtro === 'todos' || u.nivel === filtro;
+        return matchNome && matchFiltro;
+    });
+    painel_profissional_renderTabela(lista);
+}
+
+function painel_profissional_botaoExportar(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Exportando...';
+    setTimeout(function() {
+        btn.disabled = false;
+        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Exportado!';
+        toast('Relatório exportado com sucesso', 'ok');
+    }, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    painel_profissional_renderTabela(painel_profissional_usuarios);
+    painel_profissional_renderAlertas();
+});
+</script>
+
     <!-- TELAS -->
 
     </main>
