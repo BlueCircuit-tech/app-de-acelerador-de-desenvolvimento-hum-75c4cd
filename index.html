@@ -1658,6 +1658,411 @@
       </style>
     </section>
 
+    <section data-tela="minhas-metas" class="hidden">
+  <div class="px-5 pt-6 pb-24">
+    <div class="mb-6">
+      <h1 class="font-display text-2xl font-bold text-marca-900">Minhas Metas</h1>
+      <p class="text-marca-600 text-sm mt-1">Acompanhe sua jornada de desenvolvimento</p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="bg-white rounded-2xl p-3 shadow-sm border border-marca-100 text-center">
+        <div class="text-2xl font-bold text-marca-700" id="meta-ativas-count">5</div>
+        <div class="text-[11px] text-marca-500 mt-0.5">Ativas</div>
+      </div>
+      <div class="bg-white rounded-2xl p-3 shadow-sm border border-marca-100 text-center">
+        <div class="text-2xl font-bold text-emerald-600" id="meta-concluidas-count">2</div>
+        <div class="text-[11px] text-marca-500 mt-0.5">Concluídas</div>
+      </div>
+      <div class="bg-white rounded-2xl p-3 shadow-sm border border-marca-100 text-center">
+        <div class="text-2xl font-bold text-amber-500" id="meta-streak-count">12</div>
+        <div class="text-[11px] text-marca-500 mt-0.5">Dias seguidos</div>
+      </div>
+    </div>
+
+    <div class="flex gap-2 mb-5 overflow-x-auto pb-1" id="filtro-categorias">
+      <button data-filtro="todos" onclick="minhas_metas_filtrar('todos')" class="filtro-ativo whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-700 text-white transition-all active:scale-95">Todos</button>
+      <button data-filtro="emocional" onclick="minhas_metas_filtrar('emocional')" class="whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-100 text-marca-700 transition-all active:scale-95">Emocional</button>
+      <button data-filtro="relacional" onclick="minhas_metas_filtrar('relacional')" class="whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-100 text-marca-700 transition-all active:scale-95">Relacional</button>
+      <button data-filtro="autoconhecimento" onclick="minhas_metas_filtrar('autoconhecimento')" class="whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-100 text-marca-700 transition-all active:scale-95">Autoconhecimento</button>
+      <button data-filtro="pragmatico" onclick="minhas_metas_filtrar('pragmatico')" class="whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-100 text-marca-700 transition-all active:scale-95">Pragmático</button>
+    </div>
+
+    <div class="space-y-4" id="metas-lista"></div>
+
+    <div id="metas-vazio" class="hidden text-center py-16">
+      <div class="w-16 h-16 mx-auto rounded-full bg-marca-100 flex items-center justify-center mb-3">
+        <svg class="w-8 h-8 text-marca-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+      </div>
+      <p class="text-marca-500 text-sm">Nenhuma meta encontrada</p>
+      <p class="text-marca-400 text-xs mt-1">Toque no + para criar sua primeira meta</p>
+    </div>
+  </div>
+
+  <button onclick="minhas_metas_abrirNova()" class="fixed bottom-6 right-5 w-14 h-14 bg-marca-600 hover:bg-marca-700 active:scale-90 text-white rounded-full shadow-lg shadow-marca-600/30 flex items-center justify-center transition-all z-40">
+    <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+  </button>
+
+  <div id="modal-detalhe-meta" class="fixed inset-0 bg-black/50 z-50 hidden items-end justify-center" onclick="if(event.target===this)minhas_metas_fecharDetalhe()">
+    <div class="bg-white rounded-t-3xl w-full max-w-[430px] max-h-[85vh] overflow-y-auto transform transition-transform" id="modal-detalhe-meta-conteudo">
+    </div>
+  </div>
+
+  <div id="modal-nova-meta" class="fixed inset-0 bg-black/50 z-50 hidden items-end justify-center" onclick="if(event.target===this)minhas_metas_fecharNova()">
+    <div class="bg-white rounded-t-3xl w-full max-w-[430px] max-h-[85vh] overflow-y-auto p-6">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="font-display text-lg font-bold text-marca-900">Nova Meta</h2>
+        <button onclick="minhas_metas_fecharNova()" class="w-8 h-8 rounded-full bg-marca-100 flex items-center justify-center text-marca-600 active:scale-90 transition-all">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-marca-700 mb-1.5">Título da meta</label>
+          <input type="text" id="nova-meta-titulo" placeholder="Ex: Praticar respiração consciente" class="w-full border border-marca-200 rounded-xl px-4 py-3 text-sm text-marca-900 placeholder:text-marca-300 focus:outline-none focus:ring-2 focus:ring-marca-400 focus:border-transparent transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-marca-700 mb-1.5">Categoria</label>
+          <select id="nova-meta-categoria" class="w-full border border-marca-200 rounded-xl px-4 py-3 text-sm text-marca-900 focus:outline-none focus:ring-2 focus:ring-marca-400 bg-white">
+            <option value="emocional">🧘 Emocional</option>
+            <option value="relacional">🤝 Relacional</option>
+            <option value="autoconhecimento">💡 Autoconhecimento</option>
+            <option value="pragmatico">📋 Pragmático</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-marca-700 mb-1.5">Descrição</label>
+          <textarea id="nova-meta-descricao" rows="3" placeholder="Descreva o objetivo desta meta..." class="w-full border border-marca-200 rounded-xl px-4 py-3 text-sm text-marca-900 placeholder:text-marca-300 focus:outline-none focus:ring-2 focus:ring-marca-400 resize-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-marca-700 mb-1.5">Prazo (dias)</label>
+          <input type="number" id="nova-meta-prazo" value="30" min="7" class="w-full border border-marca-200 rounded-xl px-4 py-3 text-sm text-marca-900 focus:outline-none focus:ring-2 focus:ring-marca-400">
+        </div>
+        <button onclick="minhas_metas_criarNova()" class="w-full bg-marca-600 hover:bg-marca-700 text-white font-semibold py-3.5 rounded-xl active:scale-95 transition-all text-sm">Criar Meta</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  var minhas_metas_filtroAtual = 'todos';
+  var minhas_metas_metaExpandida = null;
+
+  var minhas_metas_metas = [
+    {
+      id: 1, titulo: 'Respiração Consciente Diária', categoria: 'emocional',
+      descricao: 'Praticar técnica de respiração 4-7-8 pelo menos uma vez ao dia para reduzir ansiedade e reagir melhor a gatilhos emocionais.',
+      status: 'ativo', progresso: 65, prazo: '2025-04-15', streakPessoal: 12,
+      subtarefas: [
+        { texto: 'Praticar pela manhã (5 min)', feita: true },
+        { texto: 'Registrar sensação após prática', feita: true },
+        { texto: 'Praticar antes de dormir (3 min)', feita: false },
+        { texto: 'Aplicar em momento de ansiedade', feita: false }
+      ],
+      evolucao: [20, 25, 30, 35, 42, 50, 55, 58, 62, 65],
+      reflexao: 'Hoje consegui respirar antes de responder. Senti a diferença.'
+    },
+    {
+      id: 2, titulo: 'Diário de Limites', categoria: 'relacional',
+      descricao: 'Escrever diariamente sobre situações onde estabeleci ou deixei de estabelecer limites saudáveis no relacionamento familiar.',
+      status: 'ativo', progresso: 40, prazo: '2025-04-20', streakPessoal: 8,
+      subtarefas: [
+        { texto: 'Escrever pelo menos 3 frases no diário', feita: true },
+        { texto: 'Identificar um limite violado', feita: true },
+        { texto: 'Praticar uma frase de limite em voz alta', feita: false },
+        { texto: 'Revisar semana e destacar aprendizado', feita: false }
+      ],
+      evolucao: [10, 15, 15, 22, 28, 30, 33, 36, 38, 40],
+      reflexao: 'Hoje percebi que falei "não" sem culpa pela primeira vez.'
+    },
+    {
+      id: 3, titulo: 'Identificação de Padrões', categoria: 'autoconhecimento',
+      descricao: 'Completar exercícios do Capítulo 3 do manual para mapear meus padrões de codependência e gatilhos emocionais.',
+      status: 'ativo', progresso: 80, prazo: '2025-04-10', streakPessoal: 15,
+      subtarefas: [
+        { texto: 'Ler capítulo 3 (páginas 45-72)', feita: true },
+        { texto: 'Preencher ficha de identificação de padrões', feita: true },
+        { texto: 'Listar 5 gatilhos pessoais', feita: true },
+        { texto: 'Revisar com terapeuta', feita: false }
+      ],
+      evolucao: [5, 15, 25, 35, 50, 55, 62, 68, 75, 80],
+      reflexao: 'Identifiquei que reajo com culpa quando ele usa. Isso vem da infância.'
+    },
+    {
+      id: 4, titulo: 'Rotina de Autocuidado', categoria: 'pragmatico',
+      descricao: 'Estabelecer e manter uma rotina matinal de autocuidado de 30 minutos antes de cuidar de outras pessoas.',
+      status: 'pausado', progresso: 30, prazo: '2025-04-25', streakPessoal: 0,
+      subtarefas: [
+        { texto: 'Acordar 30min mais cedo', feita: false },
+        { texto: 'Tomar água e se alongar', feita: false },
+        { texto: 'Meditar ou ouvir música calma', feita: false },
+        { texto: 'Café da manhã sem pressa', feita: false }
+      ],
+      evolucao: [10, 15, 18, 22, 25, 28, 28, 30, 30, 30],
+      reflexao: 'Meta em pausa — semana foi intensa, retomando aos poucos.'
+    },
+    {
+      id: 5, titulo: 'Fortalecer Rede de Apoio', categoria: 'relacional',
+      descricao: 'Participar de pelo menos uma reunião do grupo de apoio e conectar-se com duas pessoas da rede de suporte esta semana.',
+      status: 'ativo', progresso: 55, prazo: '2025-04-18', streakPessoal: 5,
+      subtarefas: [
+        { texto: 'Ir à reunião semanal', feita: true },
+        { texto: 'Ligar para uma amiga da rede', feita: true },
+        { texto: 'Enviar mensagem de apoio a alguém', feita: false },
+        { texto: 'Agendar café com alguém do grupo', feita: false }
+      ],
+      evolucao: [20, 30, 35, 38, 42, 45, 48, 50, 53, 55],
+      reflexao: 'O grupo me fortalece muito. Compartilhar meu progresso fez bem.'
+    },
+    {
+      id: 6, titulo: 'Plano de Segurança em Crise', categoria: 'emocional',
+      descricao: 'Montar e revisar o plano de regulação emocional com contatos de emergência, técnicas de respiração e passos concretos.',
+      status: 'concluido', progresso: 100, prazo: '2025-03-28', streakPessoal: 21,
+      subtarefas: [
+        { texto: 'Listar contatos de emergência', feita: true },
+        { texto: 'Definir local seguro', feita: true },
+        { texto: 'Escrever 3 passos de autorregulação', feita: true },
+        { texto: 'Compartilhar com terapeuta', feita: true }
+      ],
+      evolucao: [10, 30, 50, 65, 80, 85, 90, 93, 97, 100],
+      reflexao: 'Concluí! Tenho meu plano e me sinto mais preparada para crises.'
+    },
+    {
+      id: 7, titulo: 'Estudo do Manual — Unidade 2', categoria: 'autoconhecimento',
+      descricao: 'Completar a Unidade 2 do método, com exercícios práticos sobre identificação de sentimentos versus emoções.',
+      status: 'ativo', progresso: 45, prazo: '2025-04-22', streakPessoal: 7,
+      subtarefas: [
+        { texto: 'Estudar lição 2.1', feita: true },
+        { texto: 'Estudar lição 2.2', feita: true },
+        { texto: 'Fazer exercício prático da seção 2.3', feita: false },
+        { texto: 'Submeter exercício para avaliação', feita: false }
+      ],
+      evolucao: [8, 15, 22, 28, 32, 36, 38, 40, 43, 45],
+      reflexao: 'Distinguir sentimentos de emoções é mais difícil do que imaginei.'
+    }
+  ];
+
+  var minhas_metas_categoriasInfo = {
+    emocional: { icone: '🧘', cor: 'rose', label: 'Emocional' },
+    relacional: { icone: '🤝', cor: 'blue', label: 'Relacional' },
+    autoconhecimento: { icone: '💡', cor: 'amber', label: 'Autoconhecimento' },
+    pragmatico: { icone: '📋', cor: 'emerald', label: 'Pragmático' }
+  };
+
+  var minhas_metas_statusInfo = {
+    ativo: { label: 'Ativo', cor: 'bg-sky-100 text-sky-700', icone: '<svg class="w-5 h-5 text-sky-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/></svg>' },
+    pausado: { label: 'Pausado', cor: 'bg-amber-100 text-amber-700', icone: '<svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>' },
+    concluido: { label: 'Concluído', cor: 'bg-emerald-100 text-emerald-700', icone: '<svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>' }
+  };
+
+  function minhas_metas_progressoCor(p) {
+    if (p >= 100) return 'bg-emerald-500';
+    if (p >= 70) return 'bg-marca-600';
+    if (p >= 40) return 'bg-sky-500';
+    if (p >= 15) return 'bg-amber-500';
+    return 'bg-rose-400';
+  }
+
+  function minhas_metas_categoriaCor(cat) {
+    var mapa = {
+      emocional: 'border-l-rose-400',
+      relacional: 'border-l-sky-400',
+      autoconhecimento: 'border-l-amber-400',
+      pragmatico: 'border-l-emerald-400'
+    };
+    return mapa[cat] || 'border-l-marca-400';
+  }
+
+  function minhas_metas_renderizarLista() {
+    var lista = document.getElementById('metas-lista');
+    var vazio = document.getElementById('metas-vazio');
+    var metasFiltradas = minhas_metas_filtroAtual === 'todos'
+      ? minhas_metas_metas
+      : minhas_metas_metas.filter(function(m) { return m.categoria === minhas_metas_filtroAtual; });
+
+    if (metasFiltradas.length === 0) {
+      lista.classList.add('hidden');
+      vazio.classList.remove('hidden');
+      return;
+    }
+    lista.classList.remove('hidden');
+    vazio.classList.add('hidden');
+
+    var agrupadas = {};
+    metasFiltradas.forEach(function(m) {
+      if (!agrupadas[m.categoria]) agrupadas[m.categoria] = [];
+      agrupadas[m.categoria].push(m);
+    });
+
+    var ordem = ['emocional', 'relacional', 'autoconhecimento', 'pragmatico'];
+    var html = '';
+    ordem.forEach(function(cat) {
+      if (!agrupadas[cat]) return;
+      var info = minhas_metas_categoriasInfo[cat];
+      html += '<div class="mb-2"><h2 class="text-xs font-bold text-marca-500 uppercase tracking-wider mb-2 px-1">' + info.icone + ' ' + info.label + '</h2><div class="space-y-3">';
+      agrupadas[cat].forEach(function(m) {
+        var sInfo = minhas_metas_statusInfo[m.status];
+        var expandida = minhas_metas_metaExpandida === m.id;
+        html += '<div class="card bg-white rounded-2xl shadow-sm border border-marca-100 overflow-hidden border-l-4 ' + minhas_metas_categoriaCor(m.categoria) + ' cursor-pointer transition-all hover:shadow-md active:scale-[0.98]">';
+        html += '<div onclick="minhas_metas_abrirDetalhe(' + m.id + ')" class="p-4">';
+        html += '<div class="flex items-start justify-between mb-2">';
+        html += '<div class="flex-1 pr-3"><h3 class="font-display font-bold text-marca-900 text-sm leading-tight">' + m.titulo + '</h3>';
+        html += '<p class="text-marca-500 text-xs mt-1 line-clamp-2">' + m.descricao + '</p></div>';
+        html += '<div class="flex-shrink-0">' + sInfo.icone + '</div></div>';
+        html += '<div class="flex items-center gap-2 mt-3">';
+        html += '<div class="flex-1 h-2 bg-marca-100 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all duration-700 ' + minhas_metas_progressoCor(m.progresso) + '" style="width:' + m.progresso + '%"></div></div>';
+        html += '<span class="text-xs font-bold text-marca-700 min-w-[32px] text-right">' + m.progresso + '%</span></div>';
+        html += '<div class="flex items-center justify-between mt-2.5">';
+        html += '<span class="text-[11px] text-marca-400">Atualizado há ' + (m.streakPessoal > 0 ? m.streakPessoal + ' dias' : '—') + '</span>';
+        html += '<span class="text-[11px] px-2 py-0.5 rounded-full font-medium ' + sInfo.cor + '">' + sInfo.label + '</span></div></div>';
+
+        if (expandida) {
+          html += '<div class="border-t border-marca-100 bg-marca-50/50">';
+          html += '<div class="p-4">';
+          html += '<h4 class="text-xs font-bold text-marca-700 mb-2.5">Subtarefas</h4>';
+          html += '<div class="space-y-2 mb-4">';
+          m.subtarefas.forEach(function(st, idx) {
+            html += '<div onclick="minhas_metas_toggleSub(' + m.id + ',' + idx + ')" class="flex items-center gap-3 cursor-pointer group py-1">';
+            html += '<div class="w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all flex-shrink-0 ' + (st.feita ? 'bg-emerald-500 border-emerald-500' : 'border-marca-300 bg-white group-hover:border-marca-400') + '">';
+            if (st.feita) html += '<svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+            html += '</div>';
+            html += '<span class="text-xs ' + (st.feita ? 'text-marca-400 line-through' : 'text-marca-700') + '">' + st.texto + '</span></div>';
+          });
+          html += '</div>';
+
+          html += '<h4 class="text-xs font-bold text-marca-700 mb-2">Reflexão diária</h4>';
+          html += '<div class="bg-white rounded-xl p-3 border border-marca-200 mb-4"><p class="text-xs text-marca-600 italic">"' + m.reflexao + '"</p></div>';
+
+          html += '<h4 class="text-xs font-bold text-marca-700 mb-2">Evolução (últimas 10 semanas)</h4>';
+          var maxV = Math.max.apply(null, m.evolucao);
+          var barW = 18;
+          var chartH = 80;
+          var chartHtml = '<div class="flex items-end gap-1 h-' + chartH + ' bg-white rounded-xl p-3 border border-marca-200 mb-4" style="height:' + chartH + 'px">';
+          m.evolucao.forEach(function(v) {
+            var h = Math.round((v / Math.max(maxV, 100)) * (chartH - 20));
+            var barColor = v >= 80 ? 'bg-emerald-500' : v >= 50 ? 'bg-marca-500' : v >= 30 ? 'bg-sky-400' : 'bg-amber-400';
+            chartHtml += '<div class="flex-1 ' + barColor + ' rounded-sm transition-all hover:opacity-80" style="height:' + h + 'px" title="' + v + '%"></div>';
+          });
+          chartHtml += '</div>';
+          html += chartHtml;
+
+          html += '<div class="flex gap-2">';
+          html += '<button onclick="event.stopPropagation();minhas_metas_checkin(' + m.id + ')" class="flex-1 bg-marca-600 hover:bg-marca-700 text-white text-xs font-semibold py-2.5 rounded-xl active:scale-95 transition-all">Fazer Check-in</button>';
+          html += '<button onclick="event.stopPropagation();minhas_metas_pausarMeta(' + m.id + ')" class="px-4 bg-white border border-marca-200 text-marca-600 text-xs font-semibold py-2.5 rounded-xl active:scale-95 transition-all">' + (m.status === 'pausado' ? 'Retomar' : 'Pausar') + '</button>';
+          html += '</div></div></div>';
+        }
+        html += '</div>';
+      });
+      html += '</div></div>';
+    });
+
+    lista.innerHTML = html;
+    minhas_metas_atualizarContadores();
+  }
+
+  function minhas_metas_atualizarContadores() {
+    var ativas = minhas_metas_metas.filter(function(m) { return m.status === 'ativo'; }).length;
+    var concluidas = minhas_metas_metas.filter(function(m) { return m.status === 'concluido'; }).length;
+    var streak = Math.max.apply(null, minhas_metas_metas.map(function(m) { return m.streakPessoal; }));
+    var elA = document.getElementById('meta-ativas-count');
+    var elC = document.getElementById('meta-concluidas-count');
+    var elS = document.getElementById('meta-streak-count');
+    if (elA) elA.textContent = ativas;
+    if (elC) elC.textContent = concluidas;
+    if (elS) elS.textContent = streak;
+  }
+
+  function minhas_metas_filtrar(cat) {
+    minhas_metas_filtroAtual = cat;
+    minhas_metas_metaExpandida = null;
+    document.querySelectorAll('#filtro-categorias button').forEach(function(b) {
+      var f = b.getAttribute('data-filtro');
+      if (f === cat) {
+        b.className = 'filtro-ativo whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-700 text-white transition-all active:scale-95';
+      } else {
+        b.className = 'whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold bg-marca-100 text-marca-700 transition-all active:scale-95';
+      }
+    });
+    minhas_metas_renderizarLista();
+  }
+
+  function minhas_metas_toggleSub(metaId, subIdx) {
+    var m = minhas_metas_metas.find(function(x) { return x.id === metaId; });
+    if (!m) return;
+    m.subtarefas[subIdx].feita = !m.subtarefas[subIdx].feita;
+    var feitas = m.subtarefas.filter(function(s) { return s.feita; }).length;
+    m.progresso = Math.round((feitas / m.subtarefas.length) * 100);
+    if (m.progresso >= 100) { m.status = 'concluido'; toast('Parabéns! Meta concluída! 🎉', 'ok'); }
+    minhas_metas_renderizarLista();
+    if (minhas_metas_metaExpandida === metaId) {
+      setTimeout(function() { minhas_metas_abrirDetalhe(metaId); }, 50);
+    }
+  }
+
+  function minhas_metas_abrirDetalhe(id) {
+    if (minhas_metas_metaExpandida === id) { minhas_metas_metaExpandida = null; minhas_metas_renderizarLista(); return; }
+    minhas_metas_metaExpandida = id;
+    minhas_metas_renderizarLista();
+  }
+
+  function minhas_metas_checkin(id) {
+    toast('Check-in registrado! Continue assim 💪', 'ok');
+  }
+
+  function minhas_metas_pausarMeta(id) {
+    var m = minhas_metas_metas.find(function(x) { return x.id === id; });
+    if (!m) return;
+    m.status = m.status === 'pausado' ? 'ativo' : 'pausado';
+    if (m.status === 'ativo') m.streakPessoal = 0;
+    minhas_metas_metaExpandida = null;
+    minhas_metas_renderizarLista();
+    toast(m.status === 'pausado' ? 'Meta pausada temporariamente' : 'Meta retomada! Continue firme', 'info');
+  }
+
+  function minhas_metas_abrirNova() {
+    document.getElementById('modal-nova-meta').classList.remove('hidden');
+    document.getElementById('modal-nova-meta').classList.add('flex');
+    document.getElementById('nova-meta-titulo').value = '';
+    document.getElementById('nova-meta-descricao').value = '';
+    document.getElementById('nova-meta-prazo').value = '30';
+  }
+
+  function minhas_metas_fecharNova() {
+    document.getElementById('modal-nova-meta').classList.add('hidden');
+    document.getElementById('modal-nova-meta').classList.remove('flex');
+  }
+
+  function minhas_metas_criarNova() {
+    var titulo = document.getElementById('nova-meta-titulo').value.trim();
+    var categoria = document.getElementById('nova-meta-categoria').value;
+    var descricao = document.getElementById('nova-meta-descricao').value.trim();
+    if (!titulo) { toast('Preencha o título da meta', 'erro'); return; }
+    if (!descricao) { toast('Preencha a descrição', 'erro'); return; }
+    var prazoDias = parseInt(document.getElementById('nova-meta-prazo').value) || 30;
+    var d = new Date(); d.setDate(d.getDate() + prazoDias);
+    var prazo = d.toISOString().split('T')[0];
+    var novaMeta = {
+      id: Date.now(), titulo: titulo, categoria: categoria, descricao: descricao,
+      status: 'ativo', progresso: 0, prazo: prazo, streakPessoal: 0,
+      subtarefas: [
+        { texto: 'Definir primeiro passo prático', feita: false },
+        { texto: 'Estabelecer horário fixo para prática', feita: false },
+        { texto: 'Registrar primeira experiência', feita: false },
+        { texto: 'Avaliar ao final do prazo', feita: false }
+      ],
+      evolucao: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      reflexao: ''
+    };
+    minhas_metas_metas.unshift(novaMeta);
+    minhas_metas_filtroAtual = categoria;
+    minhas_metas_fecharNova();
+    minhas_metas_filtrar(categoria);
+    toast('Meta criada com sucesso! 🎯', 'ok');
+  }
+
+  minhas_metas_renderizarLista();
+  </script>
+</section>
+
     <!-- TELAS -->
 
     </main>
